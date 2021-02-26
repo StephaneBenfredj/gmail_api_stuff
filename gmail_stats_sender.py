@@ -53,7 +53,7 @@ def main():
     if not messages:
         print('Error')
     else:
-        print('Collecting data from message headers using get (can take a while) ...')
+        print(datetime.datetime.now(),'Collecting data from message headers using get (can take a while) ...')
         filename = 'results.txt'
         with open (filename, 'w') as wf:
             i = 0
@@ -71,10 +71,9 @@ def main():
             print (unique_senders)
             print (datetime.datetime.now(),'Finished counting occurences ... Writing to file')
 
-            for item in unique_senders:
-                wf.write("%s\n" % item)
+            for item in unique_senders: # unique_senders is a list of tuples
+                wf.write('\n'.join('%s %s' % item for item in unique_senders))
             print (datetime.datetime.now(),'Finished writing to file')
-   
             
 if __name__ == '__main__':
     main()
