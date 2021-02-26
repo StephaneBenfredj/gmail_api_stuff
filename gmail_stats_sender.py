@@ -13,8 +13,9 @@ from collections import Counter
 SCOPES = ['https://www.googleapis.com/auth/gmail.readonly']
 
 def main():
-    """Shows basic usage of the Gmail API.
-    Lists the user's Gmail labels.
+    """Grab emails from given category (label)
+    extract sender info in headers (From) 
+    and dump list along with occurrences in a text file 
     """
     creds = None
     # The file token.pickle stores the user's access and refresh tokens, and is
