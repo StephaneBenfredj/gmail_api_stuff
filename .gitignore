@@ -3,3 +3,5 @@ credentials.json
 results*.txt
 client.txt
 TODO.txt
+gmail_venv/*
+.vscode/
