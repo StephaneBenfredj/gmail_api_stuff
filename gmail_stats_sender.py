@@ -41,13 +41,13 @@ def main():
     
     ## get list of senders for messages with label CATEGORY_PROMOTIONS
     print (datetime.datetime.now(),'Start collecting messages ...')
-
-    results = service.users().messages().list(labelIds='CATEGORY_PROMOTIONS', userId='me', maxResults=1000).execute()
+    label = 'CATEGORY_SOCIAL'
+    results = service.users().messages().list(labelIds=label, userId='me', maxResults=1000).execute()
     messages = results.get('messages', [])
     nextPageToken = results.get('nextPageToken')
 
     while (nextPageToken):
-        results2 = service.users().messages().list(labelIds='CATEGORY_PROMOTIONS', userId='me', pageToken=nextPageToken, maxResults=1000).execute()
+        results2 = service.users().messages().list(labelIds=label, userId='me', pageToken=nextPageToken, maxResults=1000).execute()
         messages = messages + results2.get('messages', [])
         nextPageToken = results2.get('nextPageToken')
 
@@ -71,7 +71,7 @@ def main():
         print (unique_senders)  # unique_senders is a list of tuples
 
         print (datetime.datetime.now(),'Finished counting occurences ... Writing to file') 
-        filename = 'results.txt'
+        filename = 'results_'+ label + '_' + datetime.datetime.now().strftime("%Y%m%d%H%M") +'.txt'
         with open (filename, 'w') as wf:
             wf.write('\n'.join('%s %s' % item for item in unique_senders))
         print (datetime.datetime.now(),'Finished writing to file')
