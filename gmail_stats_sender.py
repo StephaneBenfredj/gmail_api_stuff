@@ -39,15 +39,15 @@ def main():
 
     service = build('gmail', 'v1', credentials=creds)
     
-    ## get list of senders for messages with label CATEGORY_PROMOTIONS
+    ## get list of senders for messages with 'label' (CATEGORY_PROMOTIONS, CATEGORY_SOCIAL)
     print (datetime.datetime.now(),'Start collecting messages ...')
     label = 'CATEGORY_SOCIAL'
-    results = service.users().messages().list(labelIds=label, userId='me', maxResults=1000).execute()
+    results = service.users().messages().list(labelIds=label, userId='me').execute()
     messages = results.get('messages', [])
     nextPageToken = results.get('nextPageToken')
 
     while (nextPageToken):
-        results2 = service.users().messages().list(labelIds=label, userId='me', pageToken=nextPageToken, maxResults=1000).execute()
+        results2 = service.users().messages().list(labelIds=label, userId='me', pageToken=nextPageToken).execute()
         messages = messages + results2.get('messages', [])
         nextPageToken = results2.get('nextPageToken')
 
