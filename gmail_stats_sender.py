@@ -56,16 +56,14 @@ def main():
         print('Error')
     else:
         print(datetime.datetime.now(),'Collecting data from message headers using get (can take a while) ...')
-        i = 0
-        senders =[]
+        print('Total number of messages : ', len(messages))
+        enders =[]
         for message in messages:
-            i+=1
             content = service.users().messages().get(userId='me', id=message['id'], format='metadata', metadataHeaders='From').execute()
             headers = content['payload']['headers']
             newone = [header['value'] for header in headers]
             senders.append(newone[0])
-            
-        print('Total number of messages : ', i)
+
         print (datetime.datetime.now(),'Finished collecting header From ... Starting to count occurences')
         unique_senders=Counter(senders).most_common()
         print (unique_senders)  # unique_senders is a list of tuples
