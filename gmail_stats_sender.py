@@ -4,7 +4,7 @@ import os.path
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
-import datetime
+from datetime import datetime
 from collections import Counter
 
 
@@ -40,7 +40,7 @@ def main():
     service = build('gmail', 'v1', credentials=creds)
     
     ## get list of senders for messages with 'label' (CATEGORY_PROMOTIONS, CATEGORY_SOCIAL)
-    print (datetime.datetime.now(),'Start collecting messages ...')
+    print (datetime.now(),'Start collecting messages ...')
     label = 'CATEGORY_SOCIAL'
     results = service.users().messages().list(labelIds=label, userId='me').execute()
     messages = results.get('messages', [])
@@ -51,28 +51,28 @@ def main():
         messages = messages + results2.get('messages', [])
         nextPageToken = results2.get('nextPageToken')
 
-    print (datetime.datetime.now(),'End collecting messages ...')
+    print (datetime.now(),'End collecting messages ...')
     if not messages:
         print('Error')
     else:
-        print(datetime.datetime.now(),'Collecting data from message headers using get (can take a while) ...')
-        print('Total number of messages : ', len(messages))
-        enders =[]
+        print(datetime.now(),'Collecting data from message headers using get (can take a while) ...')
+        print(datetime.now(),'Total number of messages : ', len(messages))
+        senders =[]
         for message in messages:
             content = service.users().messages().get(userId='me', id=message['id'], format='metadata', metadataHeaders='From').execute()
             headers = content['payload']['headers']
             newone = [header['value'] for header in headers]
             senders.append(newone[0])
 
-        print (datetime.datetime.now(),'Finished collecting header From ... Starting to count occurences')
+        print (datetime.now(),'Finished collecting header From ... Starting to count occurences')
         unique_senders=Counter(senders).most_common()
-        print (unique_senders)  # unique_senders is a list of tuples
+        # print (unique_senders)  # unique_senders is a list of tuples
 
-        print (datetime.datetime.now(),'Finished counting occurences ... Writing to file') 
-        filename = 'results_'+ label + '_' + datetime.datetime.now().strftime("%Y%m%d%H%M") +'.txt'
+        print (datetime.now(),'Finished counting occurences ... Writing to file') 
+        filename = 'results_'+ label + '_' + datetime.now().strftime("%Y%m%d%H%M") +'.txt'
         with open (filename, 'w') as wf:
             wf.write('\n'.join('%s %s' % item for item in unique_senders))
-        print (datetime.datetime.now(),'Finished writing to file')
+        print (datetime.now(),'Finished writing to file', filename)
             
 if __name__ == '__main__':
     main()
